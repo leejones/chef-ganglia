@@ -39,7 +39,7 @@ case node[:ganglia][:unicast]
 when true
   hosts = search(:node, "role:#{node['ganglia']['server_role']} AND chef_environment:#{node.chef_environment}").map {|node| node.ipaddress}
   if hosts.empty?
-     hosts = ["127.0.0.1"]
+     hosts << "127.0.0.1"
   end
   template "/etc/ganglia/gmond.conf" do
     source "gmond_unicast.conf.erb"
