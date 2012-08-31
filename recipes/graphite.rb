@@ -1,5 +1,9 @@
-graphite_hosts = search(:node, "role:#{node['ganglia']['server_role']} AND chef_environment:#{node.chef_environment}").map do |node|
-  node[:graphite][:carbon][:line_receiver_interface]
+if Chef::Config[:solo]
+  graphite_hosts = []
+else
+  graphite_hosts = search(:node, "role:#{node['ganglia']['server_role']} AND chef_environment:#{node.chef_environment}").map do |node|
+    node[:graphite][:carbon][:line_receiver_interface]
+  end
 end
 
 if graphite_hosts.empty?
