@@ -17,5 +17,10 @@ template "/usr/local/sbin/ganglia_graphite.rb" do
 end
 
 cron "ganglia_graphite" do
-  command "/usr/local/sbin/ganglia_graphite.rb"
+  command [
+    "flock /tmp/ganglia_graphite.lock -c '",
+      "(/usr/local/sbin/ganglia_graphite.rb 2>&1)",
+      "| logger -i -t ganglia_graphite",
+    "'"
+  ].join(' ')
 end
